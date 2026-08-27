@@ -3,211 +3,245 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#efe9dc">
-<title>Алтай 2026 · Чуйский тракт</title>
+<meta name="theme-color" content="#10120f">
+<title>Altai Roadbook · Чуйский тракт 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 <style>
-:root{--bg:#efe9dc;--paper:#fbf8f1;--ink:#253029;--muted:#6d756f;--line:#d8d0c2;--pine:#365447;--terra:#a4583d;--gold:#b48a4c;--blue:#476a7d;--berry:#8f556b}
+:root{--bg:#10120f;--panel:#171a16;--paper:#1d211b;--ink:#eee9dd;--muted:#a9aa9e;--line:#34392f;--moss:#7b876c;--clay:#a7664d;--sand:#c5b69d;--blue:#6e7e82;--wine:#7d5360;--black:#0a0c0a}
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
-body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"DM Sans",-apple-system,sans-serif;overflow-x:hidden}
+body:before{content:"";position:fixed;inset:0;z-index:-3;background:linear-gradient(rgba(10,12,10,.84),rgba(10,12,10,.93)),url('https://35photo.pro/photos_main/1812/9060236.jpg') center/cover no-repeat;filter:saturate(.62) contrast(1.06)}
+body:after{content:"";position:fixed;inset:28% -15% -8% 36%;z-index:-2;background:url('https://35photo.pro/photos_temp/sizes/308/1541469_1500n.jpg') center/cover no-repeat;opacity:.07;filter:grayscale(.15) saturate(.55);transform:rotate(-3deg);border-radius:80px}
 a{color:inherit}
-.hero{max-width:1180px;margin:auto;padding:44px 20px 18px}
-.kicker{font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--terra);font-weight:800}
-h1{font-family:Georgia,"Times New Roman",serif;font-size:clamp(40px,8vw,84px);line-height:.96;margin:10px 0 16px;letter-spacing:-.04em;font-weight:500}
-.hero p{max-width:760px;color:var(--muted);font-size:16px;line-height:1.65}
-.stats{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
-.stat{background:rgba(255,255,255,.55);border:1px solid var(--line);padding:9px 12px;border-radius:999px;font-size:13px}
-.shell{max-width:1180px;margin:auto;padding:0 20px 50px}
-.mapwrap{position:relative;background:var(--paper);border:1px solid var(--line);border-radius:24px;overflow:hidden}
-#map{height:67vh;min-height:560px}
-.mapnote{position:absolute;z-index:500;left:14px;bottom:14px;background:rgba(251,248,241,.92);backdrop-filter:blur(10px);padding:9px 11px;border:1px solid var(--line);border-radius:12px;font-size:11px;color:var(--muted);max-width:290px}
-.legend{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0 28px}
-.legend span{padding:7px 10px;border-radius:999px;background:rgba(255,255,255,.45);border:1px solid var(--line);font-size:12px}
-.section-title{font-family:Georgia,"Times New Roman",serif;font-size:34px;font-weight:500;margin:44px 0 16px}
-.timeline{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
-.day{background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:16px;min-height:160px;cursor:pointer;transition:.2s ease}
-.day:hover{transform:translateY(-2px)}
-.day.bday{border-color:#b98aa0;background:#fff4f8}
-.day .date{font-size:12px;font-weight:800;color:var(--terra);margin-bottom:7px}
-.day.bday .date{color:var(--berry)}
-.day h3{margin:0 0 8px;font-size:18px}
-.day p{margin:0;color:var(--muted);font-size:13px;line-height:1.5}
-.day .stay{margin-top:12px;font-size:12px;font-weight:800;color:var(--pine)}
-.stays{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
-.staycard{background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:18px}
-.staycard .dates{font-size:12px;color:var(--terra);font-weight:800}
-.staycard h3{font-size:21px;margin:6px 0}
-.staycard p{font-size:13px;color:var(--muted);line-height:1.5}
-.button{display:inline-block;margin-top:10px;padding:10px 13px;background:var(--pine);color:#fff;text-decoration:none;border-radius:12px;font-size:13px;font-weight:800}
-.birthday{margin-top:44px;background:#f7e8ed;border:1px solid #d5b7c2;border-radius:24px;padding:24px}
-.birthday h2{font-family:Georgia,"Times New Roman",serif;font-size:34px;font-weight:500;margin:0 0 10px}
-.birthday p{max-width:780px;color:#6f5962;line-height:1.6}
-.photo-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
-.photo{background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:14px;min-height:112px}
-.photo strong{display:block;margin-bottom:6px}
-.photo span{font-size:12px;color:var(--muted);line-height:1.45}
-footer{max-width:1180px;margin:auto;padding:0 20px 40px;color:var(--muted);font-size:12px;line-height:1.55}
-.date-marker{background:#fffaf2;border:2px solid var(--pine);padding:3px 6px;border-radius:10px;font-size:10px;font-weight:900;white-space:nowrap;box-shadow:0 2px 7px rgba(0,0,0,.14)}
-.date-marker.bday{border-color:var(--berry);background:#fff2f6}
-.popup-date{font-size:11px;font-weight:900;color:#8a735f}
-.popup-name{font-size:15px;font-weight:900;margin-top:2px}
-.popup-desc{font-size:12px;color:#667067;margin-top:5px;line-height:1.45}
-@media(max-width:900px){.timeline{grid-template-columns:1fr 1fr}.stays{grid-template-columns:1fr}.photo-grid{grid-template-columns:1fr 1fr}}
-@media(max-width:620px){.hero{padding-top:30px}#map{height:64vh;min-height:500px}.timeline{grid-template-columns:1fr}.photo-grid{grid-template-columns:1fr 1fr}.mapnote{max-width:230px}}
+.magazine{max-width:1280px;margin:auto;padding:0 22px 58px}
+.hero{min-height:88vh;display:flex;flex-direction:column;justify-content:space-between;padding:34px 0 28px}
+.masthead{display:flex;justify-content:space-between;gap:20px;font-size:10px;text-transform:uppercase;letter-spacing:.18em;color:#d1c9b9}
+.issue{opacity:.7}
+.hero-main{max-width:920px;padding:90px 0 40px}
+.kicker{font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:#c08a6f;font-weight:600}
+h1,h2,h3{font-family:"Instrument Serif",Georgia,serif;font-weight:400}
+h1{font-size:clamp(68px,12vw,150px);line-height:.74;letter-spacing:-.055em;margin:18px 0 28px}
+.hero-copy{max-width:720px;font-size:15px;line-height:1.75;color:#bebdb1}
+.hero-bottom{display:flex;align-items:end;justify-content:space-between;gap:18px;border-top:1px solid rgba(238,233,221,.22);padding-top:18px}
+.hero-bottom .meta{font-size:12px;color:#ccc4b5}
+.actions{display:flex;gap:9px;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:10px 13px;border-radius:999px;border:1px solid #565b50;text-decoration:none;font-size:11px;font-weight:600;background:rgba(20,23,19,.72);backdrop-filter:blur(12px)}
+.btn.primary{background:#e9e2d4;color:#161914;border-color:#e9e2d4}
+.rule{height:1px;background:var(--line);margin:42px 0}
+.spread{display:grid;grid-template-columns:minmax(0,1.22fr) minmax(320px,.78fr);gap:18px;align-items:start}
+.map-shell{position:relative;border:1px solid var(--line);overflow:hidden;background:#121410}
+#map{height:78vh;min-height:640px}
+.leaflet-tile-pane{filter:grayscale(.42) saturate(.55) brightness(.64) contrast(1.12)}
+.map-caption{position:absolute;z-index:700;left:15px;bottom:15px;background:rgba(15,17,14,.84);border:1px solid #3d4139;padding:9px 11px;font-size:10px;color:#c6c1b4;backdrop-filter:blur(10px);max-width:280px}
+.side-copy{padding:8px 0}
+.side-copy h2{font-size:56px;line-height:.88;margin:0 0 20px}
+.side-copy p{color:var(--muted);font-size:13px;line-height:1.65}
+.legend{margin-top:30px;display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:#b7b5aa}
+.legend span{border-top:1px solid var(--line);padding-top:8px}
+.section-head{display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:end;margin:78px 0 24px}
+.section-head h2{font-size:clamp(50px,7vw,88px);line-height:.82;margin:0}
+.section-head p{margin:0;color:var(--muted);font-size:13px;line-height:1.6;max-width:480px}
+.timeline{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1px;background:var(--line);border:1px solid var(--line)}
+.day{background:rgba(19,22,18,.94);padding:18px;min-height:165px;cursor:pointer}
+.day:hover{background:#20241e}
+.day.bday{background:#2b2023}
+.date{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:#c69378;font-weight:600}
+.day h3{font-size:27px;line-height:1;margin:10px 0 9px}
+.day p{font-size:12px;line-height:1.55;color:var(--muted);margin:0}
+.stayline{margin-top:15px;font-size:10px;color:#bbc1ae;text-transform:uppercase;letter-spacing:.07em}
+.bday{min-height:600px;margin:90px 0 0;background:linear-gradient(90deg,rgba(9,11,9,.9) 0%,rgba(9,11,9,.4) 55%,rgba(9,11,9,.2)),url('https://35photo.pro/photos_main/1812/9060236.jpg') center/cover no-repeat;display:flex;align-items:end;padding:42px;border-top:1px solid #555;border-bottom:1px solid #555}
+.bday-copy{max-width:660px}
+.bday h2{font-size:clamp(64px,9vw,112px);line-height:.76;margin:14px 0 24px}
+.bday p{font-size:14px;line-height:1.7;color:#d2cfc6}
+.masonry{columns:3 290px;column-gap:14px}
+.card{break-inside:avoid;margin-bottom:14px;background:#171a16;border:1px solid var(--line)}
+.card img{width:100%;display:block;aspect-ratio:4/5;object-fit:cover;filter:saturate(.52) contrast(1.1) brightness(.72) sepia(.04)}
+.card.landscape img{aspect-ratio:4/3}
+.card-body{padding:15px 16px 18px}
+.card .meta{font-size:9px;text-transform:uppercase;letter-spacing:.15em;color:#b9866d}
+.card h3{font-size:29px;line-height:.95;margin:8px 0 10px}
+.card p{font-size:12px;line-height:1.55;color:var(--muted);margin:0}
+.card .book{display:inline-block;margin-top:12px;font-size:10px;text-transform:uppercase;letter-spacing:.1em;text-decoration:none;border-bottom:1px solid}
+.image-break{height:72vh;min-height:520px;margin:80px 0;background:linear-gradient(rgba(11,13,11,.2),rgba(11,13,11,.54)),url('https://cs14.pikabu.ru/post_img/big/2021/03/23/7/1616493712143090149.jpg') center/cover no-repeat;position:relative;filter:saturate(.6) contrast(1.05) brightness(.78)}
+.image-break .caption{position:absolute;left:22px;bottom:20px;font-family:"Instrument Serif",serif;font-size:38px;font-style:italic}
+.drawer{position:fixed;z-index:3000;inset:auto 10px 10px 10px;max-width:640px;margin:auto;background:rgba(19,22,18,.97);border:1px solid #4a5045;box-shadow:0 30px 90px rgba(0,0,0,.48);transform:translateY(120%);transition:.28s ease;backdrop-filter:blur(18px)}
+.drawer.open{transform:translateY(0)}
+.drawer img{width:100%;height:250px;object-fit:cover;display:block;filter:saturate(.52) contrast(1.1) brightness(.7)}
+.drawer-body{padding:18px}
+.drawer h3{font-size:38px;line-height:.94;margin:6px 42px 10px 0}
+.drawer p{color:var(--muted);font-size:13px;line-height:1.6}
+.drawer-close{position:absolute;right:10px;top:10px;width:34px;height:34px;border-radius:50%;border:1px solid #62685b;background:rgba(15,17,14,.85);color:#fff;font-size:18px;z-index:2}
+.pin-icon{width:30px!important;height:30px!important;border:2px solid #e8e1d4;border-radius:50%;box-shadow:0 3px 12px rgba(0,0,0,.3);display:flex;align-items:center;justify-content:center;font-size:12px;color:#fff}
+.gas-icon{background:#a68955;width:28px!important;height:28px!important;border-radius:50%;border:2px solid #e8e1d4;text-align:center;line-height:24px;font-size:12px}
+.date-label{background:rgba(16,18,15,.88);color:#ded7c9;border:1px solid #555b50;padding:3px 6px;font-size:9px;white-space:nowrap}
+footer{border-top:1px solid var(--line);margin-top:80px;padding:22px 0;color:#8f9288;font-size:10px;line-height:1.6}
+@media(max-width:900px){.spread{grid-template-columns:1fr}.timeline{grid-template-columns:1fr 1fr}.side-copy h2{font-size:46px}}
+@media(max-width:620px){.magazine{padding-left:16px;padding-right:16px}.hero{min-height:82vh}.hero-main{padding-top:70px}.hero-bottom{display:block}.actions{margin-top:14px}#map{height:65vh;min-height:520px}.timeline{grid-template-columns:1fr}.section-head{grid-template-columns:1fr}.bday{min-height:520px;padding:24px}.masonry{columns:1}.image-break{height:60vh}}
 
-.destination-drawer{position:fixed;z-index:2000;inset:auto 12px 12px 12px;max-width:560px;margin:auto;background:rgba(251,248,241,.98);border:1px solid var(--line);border-radius:24px;padding:18px;box-shadow:0 20px 60px rgba(37,48,41,.22);transform:translateY(130%);transition:.3s ease}
-.destination-drawer.open{transform:translateY(0)}
-.destination-drawer .close{float:right;border:0;background:#eee7db;border-radius:999px;width:32px;height:32px;font-size:18px}
-.destination-drawer h3{font-family:Georgia,"Times New Roman",serif;font-size:28px;font-weight:500;margin:4px 42px 8px 0}
-.destination-drawer p{color:var(--muted);font-size:13px;line-height:1.55}
-.destination-drawer .photo{height:180px;padding:0;margin:12px 0;background-size:cover;background-position:center;overflow:hidden}
-.destination-drawer .photo img{width:100%;height:100%;object-fit:cover;display:block}
-.gas-icon{background:#fff8d8;border:2px solid #8c6b1e;border-radius:50%;width:28px!important;height:28px!important;text-align:center;line-height:24px;font-size:14px;box-shadow:0 2px 8px rgba(0,0,0,.18)}
-.pinboard{columns:3 240px;column-gap:12px}
-.pin{break-inside:avoid;background:var(--paper);border:1px solid var(--line);border-radius:20px;padding:16px;margin:0 0 12px}
-.pin:nth-child(3n+1){padding-top:26px}.pin:nth-child(4n+2){padding-bottom:26px}
-.pin .emoji{font-size:30px}.pin h3{font-family:Georgia,"Times New Roman",serif;font-size:23px;font-weight:500;margin:8px 0}.pin p{font-size:13px;color:var(--muted);line-height:1.5}
-@media(max-width:620px){.pinboard{columns:1}.destination-drawer{bottom:8px}}
+.mag-grid{display:grid;grid-template-columns:72px 1fr;gap:20px;margin-top:90px}
+.mag-index{writing-mode:vertical-rl;transform:rotate(180deg);font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:#777d71;border-left:1px solid var(--line);padding-left:12px}
+.editorial-intro{display:grid;grid-template-columns:1.1fr .9fr;gap:26px;align-items:start;margin:70px 0 20px}
+.editorial-intro .bigquote{font-family:"Instrument Serif",serif;font-size:clamp(44px,6vw,78px);line-height:.88;color:#e8e1d3}
+.editorial-intro .smallnote{font-size:12px;line-height:1.65;color:#9da095;max-width:430px;border-top:1px solid var(--line);padding-top:14px}
+.pullquote{font-family:"Instrument Serif",serif;font-size:clamp(42px,5vw,66px);font-style:italic;line-height:.95;max-width:900px;margin:90px auto;text-align:center;color:#d8d0c1}
+.number-band{display:grid;grid-template-columns:1fr 1fr 1fr;border-top:1px solid var(--line);border-bottom:1px solid var(--line);margin:70px 0}
+.number-band div{padding:22px 0;border-right:1px solid var(--line)}
+.number-band div:last-child{border-right:0;padding-left:22px}
+.number-band div:nth-child(2){padding-left:22px}
+.number-band strong{display:block;font-family:"Instrument Serif",serif;font-size:40px;font-weight:400}
+.number-band span{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#96998e}
+.card:nth-child(4n+1){margin-top:48px}
+.card:nth-child(5n+2){margin-top:18px}
+.card .caption-line{display:flex;justify-content:space-between;gap:12px;margin-top:10px;padding-top:10px;border-top:1px solid #30352d;font-size:9px;text-transform:uppercase;letter-spacing:.1em;color:#777c71}
+.route-note{margin-top:14px;font-size:10px;line-height:1.55;color:#8f9288;border-left:1px solid #53584f;padding-left:10px}
+@media(max-width:700px){
+ .mag-grid{grid-template-columns:1fr}
+ .mag-index{writing-mode:horizontal-tb;transform:none;border-left:0;border-top:1px solid var(--line);padding:10px 0 0}
+ .editorial-intro{grid-template-columns:1fr}
+ .number-band{grid-template-columns:1fr}
+ .number-band div{border-right:0;border-bottom:1px solid var(--line);padding:18px 0!important}
+}
 </style>
 </head>
 <body>
+<div class="magazine">
 <section class="hero">
-<div class="kicker">mountain · road trip · hiking</div>
-<h1>Алтай<br>по Чуйскому</h1>
-<p>Наше путешествие от Манжерока до Курайской и Чуйской степей: красивые перевалы, Гейзерное озеро, Марс, Кош-Агач и отдельный birthday stay в Basecamp Aktru.</p>
-<div class="stats"><span class="stat">23.09 → 01.10</span><span class="stat">2 человека</span><span class="stat">8 ночей</span><span class="stat">🎂 27 сентября</span></div>
+ <div class="masthead"><span>ALT / ROAD JOURNAL</span><span class="issue">ISSUE 01 · SEPT 2026</span></div>
+ <div class="hero-main">
+  <div class="kicker">mountain road trip · r-256</div>
+  <h1>CHUYA<br>HIGHWAY</h1>
+  <p class="hero-copy">Восемь ночей по Чуйскому тракту — от мягкого старта в Манжероке до сухой Чуйской степи. Дорога, осенние горы, холодные реки и день рождения в Курайской степи.</p>
+ </div>
+ <div class="hero-bottom">
+  <div class="meta">23 SEP → 01 OCT · 2 PEOPLE · 5 STAYS · R-256</div>
+  <div class="actions">
+   <a class="btn primary" href="https://yandex.ru/maps/?mode=routes&rtext=51.966000%2C85.833000~51.829000%2C85.767000~50.750000%2C86.130000~50.312000%2C87.596000~50.242700%2C87.978100~50.232000%2C87.930000~49.992000%2C88.675000~50.242700%2C87.978100~50.549750%2C86.578930~51.829000%2C85.767000~51.966000%2C85.833000" target="_blank" rel="noopener">Открыть основной маршрут в Яндекс Картах ↗</a>
+   <a class="btn" href="#route">Маршрут</a><a class="btn" href="#stays">Ночёвки</a>
+  </div>
+ </div>
 </section>
 
-<main class="shell">
-<div class="mapwrap">
-<div id="map"></div>
-<div class="mapnote">Переключи слой на «Рельеф» в правом верхнем углу. Нажимай на точки — увидишь даты, описание и ссылки на жильё.</div>
-</div>
-<div class="legend"><span>🛏 Ночёвки</span><span>◉ Must-see</span><span>🎂 День рождения</span><span>↩ Обратные остановки</span></div>
+<div class="rule"></div>
+<section class="editorial-intro">
+  <div class="bigquote">A road that feels less like a route — and more like a long, moving landscape.</div>
+  <div class="smallnote">В этой версии карта остаётся утилитарной, а сам сайт работает как дорожный журнал: большие фото, короткие заметки, асимметричная сетка и только те детали, к которым хочется возвращаться в поездке.</div>
+</section>
 
-<h2 class="section-title">Маршрут по дням</h2>
+<div class="number-band">
+  <div><strong>≈ 8</strong><span>days on the road</span></div>
+  <div><strong>5</strong><span>stays</span></div>
+  <div><strong>1</strong><span>birthday in the steppe</span></div>
+</div>
+
+
+<section class="mag-grid"><div class="mag-index">01 / route & terrain</div><div><section class="spread" id="route">
+ <div class="map-shell">
+  <div id="map"></div>
+  <div class="map-caption">Нажми на точку — снизу откроется карточка. Слои карты: roadbook / relief / satellite.</div>
+ </div>
+ <aside class="side-copy">
+  <div class="kicker">the route</div>
+  <h2>Road,<br>not checklist.</h2>
+  <p>Туда берём главные точки центрального Чуйского. Обратно — Ширлак, Яломан и Ильгумень. Так та же дорога ощущается как другой день, а не повтор маршрута.</p>
+  <div class="legend"><span>⌂ ночёвки</span><span>• места</span><span>⛽ топливо</span><span>↩ обратно</span></div><div class="route-note">Экспорт в Яндекс Карты теперь содержит только основную ось поездки: аэропорт → ночёвки → Кош-Агач → обратные ночёвки → аэропорт. Достопримечательности остаются на этой карте, чтобы не упираться в лимит точек.</div>
+ </aside>
+</section></div></section>
+
+<div class="section-head"><h2>8 days<br>on the road</h2><p>Короткий ритм поездки. Тап по дню приблизит карту к нужному участку.</p></div>
 <div id="timeline" class="timeline"></div>
 
-<section class="birthday">
-<h2>27 сентября · день рождения</h2>
-<p><strong>Акташ → Курайская степь → Basecamp Aktru.</strong> День без спешки: панорамы Северо-Чуйского хребта, Чуйские меандры, заселение в зеркальный дом, баня и длинный вечер в горах. 28-го не меняем базу и едем дальше по Чуйскому до Марса и Кош-Агача.</p>
+<section class="bday">
+ <div class="bday-copy">
+  <div class="kicker">27 september · birthday</div>
+  <h2>Stay<br>in the steppe.</h2>
+  <p>Акташ → Курайская степь → Basecamp Aktru. В этот день не собираем километры. Делаем паузы у Северо-Чуйского хребта, заселяемся засветло, идём в баню и оставляем Марс на следующий день.</p>
+ </div>
 </section>
 
-<h2 class="section-title">Выбранные ночёвки</h2>
-<div class="stays">
-<div class="staycard"><div class="dates">23→24.09 · 30.09→01.10</div><h3>Усадьба Зорькиных</h3><p>Манжерок. Спокойное начало и финал рядом с аэропортом.</p><a class="button" href="https://usadzor.ru/booking" target="_blank">Бронирование ↗</a></div>
-<div class="staycard"><div class="dates">24→25.09</div><h3>Белая Чудь</h3><p>Онгудай. Одна комфортная транзитная ночь перед центральной частью Чуйского.</p></div>
-<div class="staycard"><div class="dates">25→27.09</div><h3>Расул</h3><p>Акташ. Тёплое комфортное жильё и база для Гейзерного озера.</p><a class="button" href="https://rasulka.ru/" target="_blank">Бронирование ↗</a></div>
-<div class="staycard"><div class="dates">27→29.09 🎂</div><h3>Basecamp Aktru</h3><p>Курайская степь. Главное проживание поездки: панорамный дом и баня.</p><a class="button" href="https://basecamp.bron-hotel.ru/booking_official/sayt-Basecamp-Aktru-aktru" target="_blank">Бронирование ↗</a></div>
-<div class="staycard"><div class="dates">29→30.09</div><h3>Brosko Terra</h3><p>Малый Яломан. Последняя горная ночь на обратной дороге.</p><a class="button" href="https://mapcarta.com/W1085372264" target="_blank">Открыть ↗</a></div>
+<div class="pullquote">“The farther east we go, the less the road feels like transport — and the more it becomes the trip itself.”</div>
+<div class="section-head" id="stays"><h2>Where<br>we sleep</h2><p>Ночёвки как часть маршрута: от практичных тёплых баз до одного действительно особенного birthday stay.</p></div>
+<div id="stayCards" class="masonry"></div>
+
+<div class="image-break"><div class="caption">cold water / warm larch / late september</div></div>
+
+<div class="section-head"><h2>Places<br>worth stopping</h2><p>Не энциклопедия, а визуальные заметки: характер места, один абзац и фотография в общей плёночной тональности.</p></div>
+<div id="sightCards" class="masonry"></div>
+
+<footer>Фотографии на странице используются как визуальные референсы путешествия; карта — OpenStreetMap/CARTO/Esri. Для навигации и топлива перед поездкой всё равно сохраняем офлайн-карты и проверяем актуальную дорожную обстановку.</footer>
 </div>
 
-<h2 class="section-title">Места, ради которых едем</h2>
-<div class="pinboard">
-<div class="pin"><div class="emoji">🏔️</div><h3>Курайская степь</h3><p>Огромная межгорная котловина и снежная стена Северо-Чуйского хребта. Лучший день для медленного road trip и длинных остановок.</p></div>
-<div class="pin"><div class="emoji">🩵</div><h3>Гейзерное озеро</h3><p>Небольшое ярко-бирюзовое озеро с меняющимися рисунками на дне. Радиальный выезд из Акташа.</p></div>
-<div class="pin"><div class="emoji">🛣️</div><h3>Чике-Таман</h3><p>Серпантин и высокая смотровая над долиной. Один из тех участков, где сама дорога — достопримечательность.</p></div>
-<div class="pin"><div class="emoji">🌊</div><h3>Чуя + Катунь</h3><p>Две реки встречаются в одной широкой горной панораме. Must-see 25 сентября.</p></div>
-<div class="pin"><div class="emoji">🪐</div><h3>Алтайский Марс</h3><p>Красные, охристые и полосатые склоны Кызыл-Чина. Самый «другой» пейзаж поездки.</p></div>
-<div class="pin"><div class="emoji">🌾</div><h3>Чуйская степь</h3><p>После Курая пространство становится ещё шире и суше — почти монгольский пейзаж по дороге к Кош-Агачу.</p></div>
+<div id="drawer" class="drawer">
+ <button class="drawer-close" type="button">×</button>
+ <img id="drawerImg" alt="" style="display:none">
+ <div class="drawer-body"><div id="drawerDate" class="kicker"></div><h3 id="drawerTitle"></h3><p id="drawerDesc"></p><div id="drawerAction"></div></div>
 </div>
-</main>
-
-<div id="destinationDrawer" class="destination-drawer">
-<button class="close" onclick="closeDrawer()">×</button>
-<div id="drawerDate" class="kicker"></div>
-<h3 id="drawerTitle"></h3>
-<div id="drawerPhoto" class="photo" style="display:none"></div>
-<p id="drawerText"></p>
-</div>
-<footer>
-Основная ось маршрута — Р-256. Линия на карте строится по реальным дорогам через публичный OSRM; если сервис временно недоступен, включается резервная линия по тем же точкам. Для самой поездки всё равно сохрани офлайн-карты и проверяй состояние дорог и топлива перед дальними участками.
-</footer>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
-const stops=[{"date": "23.09", "title": "Прилёт и Манжерок", "name": "Аэропорт Горно-Алтайск", "lat": 51.966, "lon": 85.833, "kind": "route", "desc": "Прилёт после ночного перелёта, забираем машину и едем отдыхать."}, {"date": "23→24.09", "title": "Манжерок", "name": "Усадьба Зорькиных", "lat": 51.829, "lon": 85.767, "kind": "stay", "desc": "Первая спокойная ночь после перелёта.", "url": "https://usadzor.ru/booking"}, {"date": "24.09", "title": "Семинский перевал", "name": "Семинский перевал", "lat": 51.046, "lon": 85.604, "kind": "sight", "desc": "Первая большая панорама Чуйского тракта."}, {"date": "24→25.09", "title": "Онгудай", "name": "Усадьба «Белая Чудь»", "lat": 50.75, "lon": 86.13, "kind": "stay", "desc": "Комфортная транзитная ночь."}, {"date": "25.09", "title": "Чике-Таман", "name": "Перевал Чике-Таман", "lat": 50.645, "lon": 86.313, "kind": "sight", "desc": "Один из самых красивых участков дороги."}, {"date": "25.09", "title": "Иня", "name": "Иня", "lat": 50.403, "lon": 86.658, "kind": "sight", "desc": "Старый мост и каменные стелы."}, {"date": "25.09", "title": "Слияние рек", "name": "Слияние Чуи и Катуни", "lat": 50.3965, "lon": 86.6735, "kind": "sight", "desc": "Одна из главных must-see точек."}, {"date": "25.09", "title": "Калбак-Таш", "name": "Калбак-Таш", "lat": 50.4014, "lon": 86.8191, "kind": "sight", "desc": "Петроглифы у Чуйского тракта."}, {"date": "25.09", "title": "Белый Бом", "name": "Белый Бом", "lat": 50.3475, "lon": 86.84, "kind": "sight", "desc": "Исторический участок старого тракта."}, {"date": "25→27.09", "title": "Акташ", "name": "Гостиница «Расул»", "lat": 50.312, "lon": 87.596, "kind": "stay", "desc": "Две тёплые комфортные ночи, база для Гейзерного озера.", "url": "https://rasulka.ru/"}, {"date": "26.09", "title": "Гейзерное озеро", "name": "Гейзерное озеро", "lat": 50.2892, "lon": 87.6672, "kind": "sight", "desc": "Главная точка спокойного радиального дня."}, {"date": "27.09 🎂", "title": "Курайская степь", "name": "Курайская степь", "lat": 50.245, "lon": 87.9, "kind": "birthday", "desc": "Панорамы Северо-Чуйского хребта, меандры и день рождения."}, {"date": "27→29.09 🎂", "title": "Birthday stay", "name": "Basecamp Aktru", "lat": 50.24734, "lon": 87.97908, "kind": "staybirthday", "desc": "Панорамный дом в Курайской степи, две праздничные ночи и баня.", "url": "https://basecamp.bron-hotel.ru/booking_official/sayt-Basecamp-Aktru-aktru"}, {"date": "28.09", "title": "Чаган-Узун", "name": "Чаган-Узун", "lat": 50.103, "lon": 88.356, "kind": "sight", "desc": "Продолжаем дальше по Чуйскому тракту."}, {"date": "28.09", "title": "Алтайский Марс", "name": "Кызыл-Чин / Марс", "lat": 50.065, "lon": 88.33, "kind": "sight", "desc": "Цветные горы и один из самых необычных пейзажей маршрута."}, {"date": "28.09", "title": "Кош-Агач", "name": "Кош-Агач", "lat": 49.992, "lon": 88.675, "kind": "turn", "desc": "Дальняя точка поездки по Чуйскому тракту."}, {"date": "29.09", "title": "Ширлак", "name": "Водопад Ширлак", "lat": 50.3456, "lon": 87.2191, "kind": "return", "desc": "Специально оставляем на обратную дорогу."}, {"date": "29→30.09", "title": "Малый Яломан", "name": "Brosko Terra", "lat": 50.54975, "lon": 86.57893, "kind": "stay", "desc": "Последняя горная ночь с видом.", "url": "https://mapcarta.com/W1085372264"}, {"date": "30.09", "title": "Ильгумень", "name": "Большой Ильгуменский порог", "lat": 50.6085, "lon": 86.5085, "kind": "return", "desc": "Сильная финальная остановка обратного пути."}, {"date": "30→01.10", "title": "Манжерок", "name": "Усадьба Зорькиных", "lat": 51.829, "lon": 85.767, "kind": "stay", "desc": "Последняя ночь рядом с аэропортом.", "url": "https://usadzor.ru/booking"}, {"date": "01.10 · 08:00", "title": "Вылет", "name": "Аэропорт Горно-Алтайск", "lat": 51.966, "lon": 85.833, "kind": "route", "desc": "Утренний рейс домой."}];
-const days=[{"date": "23.09", "title": "Прилёт → Манжерок", "text": "Отдых после ночного перелёта. Без насыщенной программы.", "stay": "Усадьба Зорькиных"}, {"date": "24.09", "title": "Манжерок → Онгудай", "text": "Семинский перевал и спокойный вход в road trip.", "stay": "Белая Чудь"}, {"date": "25.09", "title": "Онгудай → Акташ", "text": "Чике-Таман · Иня · слияние Чуи и Катуни · Калбак-Таш · Белый Бом.", "stay": "Расул"}, {"date": "26.09", "title": "Акташ", "text": "Гейзерное озеро + спокойный вечер.", "stay": "Расул"}, {"date": "27.09 🎂", "title": "Акташ → Курай", "text": "Курайская степь, Северо-Чуйский хребет, праздничное заселение и баня.", "stay": "Basecamp Aktru", "bday": true}, {"date": "28.09", "title": "Дальний Чуйский", "text": "Чаган-Узун · Марс · Чуйская степь · Кош-Агач · обратно в Basecamp.", "stay": "Basecamp Aktru"}, {"date": "29.09", "title": "Обратно → Малый Яломан", "text": "Ширлак · виды долины Чуи · Иня · Яломан.", "stay": "Brosko Terra"}, {"date": "30.09", "title": "Малый Яломан → Манжерок", "text": "Большой Ильгуменский порог · Чике-Таман · Семинский перевал.", "stay": "Усадьба Зорькиных"}, {"date": "01.10", "title": "Аэропорт", "text": "Ранний выезд. Вылет в 08:00.", "stay": ""}];
-const map=L.map('map',{zoomControl:true}).setView([50.85,86.95],7);
-const osm=L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'© OpenStreetMap contributors'}).addTo(map);
-const topo=L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png',{maxZoom:17,attribution:'© OpenTopoMap · © OpenStreetMap contributors'});
-L.control.layers({'Карта':osm,'Рельеф':topo},null,{position:'topright'}).addTo(map);
+const stops=[{"date": "23→24.09", "name": "Усадьба Зорькиных", "lat": 51.829, "lon": 85.767, "kind": "stay", "desc": "Тихая первая ночь после перелёта. Здесь задача простая: тепло, завтрак и восстановиться перед дорогой.", "url": "https://usadzor.ru/booking", "img": "https://karoaltai.ru/d/usadba_zorkinyh1.jpg"}, {"date": "24.09", "name": "Семинский перевал", "lat": 51.046, "lon": 85.604, "kind": "sight", "desc": "Первый большой подъём Чуйского тракта: кедры, холодный воздух и длинная дорога через перевал.", "img": "https://35photo.pro/photos_main/1812/9060236.jpg"}, {"date": "24→25.09", "name": "Белая Чудь · Онгудай", "lat": 50.75, "lon": 86.13, "kind": "stay", "desc": "Одна спокойная транзитная ночь между Семинским и Чике-Таманом."}, {"date": "25.09", "name": "Перевал Чике-Таман", "lat": 50.645, "lon": 86.313, "kind": "sight", "desc": "Серпантин, каменные склоны и тот момент, когда дорога сама становится главным героем поездки.", "img": "https://35photo.pro/photos_main/1812/9060236.jpg"}, {"date": "25.09", "name": "Слияние Чуи и Катуни", "lat": 50.39458, "lon": 86.6731, "kind": "sight", "desc": "Высокая смотровая над двумя реками. Один из самых выразительных пейзажей центральной части тракта.", "img": "https://www.bigtranstour.ru/assets/images/info/altaj/2.png"}, {"date": "25.09", "name": "Калбак-Таш", "lat": 50.4014, "lon": 86.8191, "kind": "sight", "desc": "Петроглифы у самой дороги: короткая остановка, которая добавляет маршруту исторический слой."}, {"date": "25.09", "name": "Белый Бом", "lat": 50.3475, "lon": 86.84, "kind": "sight", "desc": "Старый Чуйский тракт, скалы и долина Чуи — дорожная история без отдельного крюка."}, {"date": "25→27.09", "name": "Расул · Акташ", "lat": 50.312, "lon": 87.596, "kind": "stay", "desc": "Две тёплые комфортные ночи. Отсюда делаем отдельный день к Гейзерному озеру.", "url": "https://rasulka.ru/", "img": "https://img.broni.travel/public/sites/pages/2067/1662807.png"}, {"date": "26.09", "name": "Гейзерное озеро", "lat": 50.2892, "lon": 87.6672, "kind": "sight", "desc": "Небольшое, почти неестественно бирюзовое озеро. Хорошо оставить ему спокойное утро без длинного перегона.", "img": "https://cs14.pikabu.ru/post_img/big/2021/03/23/7/1616493712143090149.jpg"}, {"date": "27.09 🎂", "name": "Курайская степь", "lat": 50.245, "lon": 87.9, "kind": "birthday", "desc": "День рождения в открытом пространстве: золотая степь, тяжёлое небо и снежная линия Северо-Чуйского хребта.", "img": "https://35photo.pro/photos_main/1812/9060236.jpg"}, {"date": "27→29.09 🎂", "name": "Basecamp Aktru", "lat": 50.2427, "lon": 87.9781, "kind": "staybirthday", "desc": "Главное проживание поездки: зеркальный дом в Курайской степи, две ночи и баня, чтобы 27 сентября не превращалось в логистику.", "url": "https://basecamp.bron-hotel.ru/booking_official/sayt-Basecamp-Aktru-aktru", "img": "https://uploads2.stells.info/KUkd4rLuXhVH7qwcRpkUSaS004c%3D/952x600/jpg/5/1c/51c2360b5b2af934cb3ed9a0bbdad1e2.jpg"}, {"date": "28.09", "name": "Алтайский Марс · Кызыл-Чин", "lat": 50.065, "lon": 88.33, "kind": "sight", "desc": "Красные и охристые холмы на фоне тёмных гор. Самая «другая планета» на всём маршруте.", "img": "https://35photo.pro/photos_temp/sizes/308/1541469_1500n.jpg"}, {"date": "28.09", "name": "Кош-Агач · Чуйская степь", "lat": 49.992, "lon": 88.675, "kind": "turn", "desc": "Дальняя точка поездки: простор становится суше и почти центральноазиатским."}, {"date": "29.09", "name": "Водопад Ширлак", "lat": 50.3456, "lon": 87.2191, "kind": "return", "desc": "Короткая остановка, которую специально оставляем на обратную дорогу.", "img": "https://imcdn.bolshayastrana.com/940x00/260fcc640ec2b406909aabcfe4bf8b85d91188974e348e95c8bfb35b352940a9.jpeg"}, {"date": "29→30.09", "name": "Brosko Terra · Малый Яломан", "lat": 50.54975, "lon": 86.57893, "kind": "stay", "desc": "Последняя горная ночь маршрута: темнота, горы и ощущение road trip перед возвращением в цивилизацию.", "url": "https://ivengoaltay.ru/"}, {"date": "30.09", "name": "Большой Ильгуменский порог", "lat": 50.6085, "lon": 86.5085, "kind": "return", "desc": "Белая вода и тёмные скалы — сильная финальная природная точка обратной дороги.", "img": "https://www.turistka.ru/i/0601/img/kurkechu_224.jpg"}, {"date": "30→01.10", "name": "Усадьба Зорькиных · финал", "lat": 51.829, "lon": 85.767, "kind": "stay", "desc": "Финальная спокойная ночь рядом с аэропортом.", "url": "https://usadzor.ru/booking", "img": "https://karoaltai.ru/d/usadba_zorkinyh1.jpg"}];
+const gas=[{"name": "АЗС · Онгудай", "lat": 50.75, "lon": 86.13, "note": "Ключевая дозаправка перед Чике-Таманом."}, {"name": "АЗС · Акташ", "lat": 50.312, "lon": 87.596, "note": "Перед Кураем лучше долить до полного."}, {"name": "АЗС · Курай", "lat": 50.232, "lon": 87.93, "note": "Резервная точка; наличие топлива перепроверять."}, {"name": "АЗС · Кош-Агач", "lat": 49.992, "lon": 88.675, "note": "Главная дальняя точка дозаправки."}];
+const days=[["23.09", "Прилёт → Манжерок", "Тихий старт после ночного перелёта.", "Зорькиных"], ["24.09", "Манжерок → Онгудай", "Семинский перевал.", "Белая Чудь"], ["25.09", "Онгудай → Акташ", "Чике-Таман · Чуя+Катунь · Калбак-Таш · Белый Бом.", "Расул"], ["26.09", "Акташ", "Гейзерное озеро. Без большого перегона.", "Расул"], ["27.09 🎂", "Акташ → Курай", "Степь · Северо-Чуйский хребет · баня.", "Basecamp Aktru"], ["28.09", "Дальний Чуйский", "Марс · Чуйская степь · Кош-Агач.", "Basecamp Aktru"], ["29.09", "Назад → Яломан", "Ширлак · долина Чуи · горная ночь.", "Brosko Terra"], ["30.09", "Яломан → Манжерок", "Ильгумень · Чике-Таман · Семинский.", "Зорькиных"], ["01.10", "Аэропорт", "Вылет 08:00.", ""]];
+const routePts=[[51.966, 85.833], [51.829, 85.767], [51.046, 85.604], [50.75, 86.13], [50.645, 86.313], [50.39458, 86.6731], [50.4014, 86.8191], [50.3475, 86.84], [50.312, 87.596], [50.2892, 87.6672], [50.312, 87.596], [50.2427, 87.9781], [50.065, 88.33], [49.992, 88.675], [50.2427, 87.9781], [50.3456, 87.2191], [50.54975, 86.57893], [50.6085, 86.5085], [51.046, 85.604], [51.829, 85.767], [51.966, 85.833]];
 
-const layers={stays:L.layerGroup().addTo(map),sights:L.layerGroup().addTo(map),route:L.layerGroup().addTo(map),dates:L.layerGroup().addTo(map)};
-L.control.layers(null,{'Ночёвки':layers.stays,'Достопримечательности':layers.sights,'Маршрут':layers.route,'Даты':layers.dates},{position:'topright',collapsed:true}).addTo(map);
+const map=L.map('map',{zoomControl:true}).setView([50.8,86.9],7);
+const road=L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',{maxZoom:19,attribution:'© OpenStreetMap © CARTO'}).addTo(map);
+const topo=L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png',{maxZoom:17,attribution:'© OpenTopoMap © OpenStreetMap'});
+const sat=L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',{maxZoom:18,attribution:'Tiles © Esri'});
+L.control.layers({'Roadbook':road,'Relief':topo,'Satellite':sat},null,{position:'topright'}).addTo(map);
 
-function color(k){if(k==='stay'||k==='staybirthday')return '#365447';if(k==='birthday')return '#8f556b';if(k==='return')return '#476a7d';if(k==='turn')return '#7f5b34';return '#b48a4c'}
-const bounds=[];
-stops.forEach(s=>{
- const group=(s.kind==='stay'||s.kind==='staybirthday')?layers.stays:layers.sights;
- const m=L.circleMarker([s.lat,s.lon],{radius:(s.kind.includes('stay')?8:6),color:'#fff',weight:2,fillColor:color(s.kind),fillOpacity:1}).addTo(group);
- m.on('click',()=>openDrawer(s));
- m.bindPopup(`<div class="popup-date">${s.date}</div><div class="popup-name">${s.name}</div><div class="popup-desc">${s.desc}</div>${s.url?`<p><a href="${s.url}" target="_blank">Открыть / бронирование ↗</a></p>`:''}`);
- L.marker([s.lat,s.lon],{interactive:false,icon:L.divIcon({className:'',html:`<div class="date-marker ${s.kind.includes('birthday')?'bday':''}">${s.date}</div>`,iconAnchor:[-6,18]})}).addTo(layers.dates);
- bounds.push([s.lat,s.lon]);
-});
-map.fitBounds(bounds,{padding:[24,24]});
+const routeLayer=L.layerGroup().addTo(map),pointsLayer=L.layerGroup().addTo(map),gasLayer=L.layerGroup().addTo(map),labelsLayer=L.layerGroup().addTo(map);
+L.control.layers(null,{'Route':routeLayer,'Places':pointsLayer,'Gas':gasLayer,'Dates':labelsLayer},{position:'topright',collapsed:true}).addTo(map);
 
-const forward=[[51.966,85.833],[51.829,85.767],[51.046,85.604],[50.750,86.130],[50.645,86.313],[50.403,86.658],[50.3965,86.6735],[50.4014,86.8191],[50.3475,86.8400],[50.312,87.596],[50.24734,87.97908],[50.103,88.356],[49.992,88.675]];
-const back=[[49.992,88.675],[50.24734,87.97908],[50.312,87.596],[50.3456,87.2191],[50.403,86.658],[50.54975,86.57893],[50.6085,86.5085],[50.645,86.313],[50.750,86.130],[51.046,85.604],[51.829,85.767],[51.966,85.833]];
-const side=[{pts:[[50.312,87.596],[50.2892,87.6672],[50.312,87.596]],label:'26.09 · Гейзерное озеро'},{pts:[[50.103,88.356],[50.065,88.330],[50.103,88.356]],label:'28.09 · Алтайский Марс'}];
-side.forEach(x=>L.polyline(x.pts,{color:'#8f556b',weight:3,dashArray:'5 7'}).bindTooltip(x.label).addTo(layers.route));
-function fallback(){L.polyline(forward,{color:'#a4583d',weight:4}).addTo(layers.route);L.polyline(back,{color:'#476a7d',weight:3,dashArray:'8 7'}).addTo(layers.route)}
-async function route(points,c,dash){
- const coords=points.map(p=>`${p[1]},${p[0]}`).join(';');
- const r=await fetch(`https://router.project-osrm.org/route/v1/driving/${coords}?overview=full&geometries=geojson&steps=false`);
- if(!r.ok)throw 0;const j=await r.json();if(!j.routes||!j.routes[0])throw 0;
- return L.geoJSON(j.routes[0].geometry,{style:{color:c,weight:dash?3:4,dashArray:dash?'8 7':null,opacity:.92}}).addTo(layers.route)
+function markerIcon(s){
+ const c=s.kind.includes('stay')?'#7b876c':s.kind==='birthday'?'#7d5360':s.kind==='return'?'#6e7e82':s.kind==='turn'?'#a7664d':'#9b5f45';
+ const t=s.kind.includes('stay')?'⌂':s.kind==='return'?'↩':s.kind==='birthday'?'✦':'•';
+ return L.divIcon({className:'',html:`<div class="pin-icon" style="background:${c}">${t}</div>`,iconSize:[30,30],iconAnchor:[15,15]});
 }
-Promise.all([route(forward,'#a4583d',false),route(back,'#476a7d',true)]).catch(fallback);
-
-
-const gasStations=[
- {name:'АЗС · Онгудай',lat:50.75,lon:86.13,note:'Ключевая дозаправка перед Чике-Таманом.'},
- {name:'АЗС · Иня',lat:50.403,lon:86.658,note:'Резервная точка на центральном участке.'},
- {name:'АЗС · Акташ',lat:50.312,lon:87.596,note:'Стратегическая заправка: перед Кураем лучше залить полный бак.'},
- {name:'АЗС · Курай',lat:50.232,lon:87.93,note:'Резерв после Акташа; наличие топлива лучше не считать гарантированным.'},
- {name:'АЗС · Кош-Агач',lat:49.992,lon:88.675,note:'Ключевая дозаправка на дальнем участке.'}
-];
-const gasLayer=L.layerGroup().addTo(map);
-gasStations.forEach(g=>{
- const icon=L.divIcon({className:'gas-icon',html:'⛽',iconSize:[28,28],iconAnchor:[14,14]});
- L.marker([g.lat,g.lon],{icon}).bindPopup(`<b>${g.name}</b><br>${g.note}`).addTo(gasLayer);
-});
-L.control.layers(null,{'⛽ Заправки':gasLayer},{position:'topright',collapsed:true}).addTo(map);
-
-const destinationInfo={
- 'Семинский перевал':{text:'Высокий перевал и первая большая смена ландшафта. Здесь не нужен длинный хайк — лучше остановиться, пройтись и почувствовать масштаб дороги.'},
- 'Перевал Чике-Таман':{text:'Классический горный серпантин Чуйского тракта. На вершине — широкие виды на хребты и старую линию дороги.'},
- 'Слияние Чуи и Катуни':{text:'Одна из самых фотогеничных точек маршрута: две реки сходятся под высокой природной террасой.'},
- 'Гейзерное озеро':{text:'Компактное бирюзовое озеро с узорами голубой глины на дне. Хорошо подходит для спокойного утра без большого автомобильного перегона.'},
- 'Курайская степь':{text:'Главная панорама birthday-дня: золотая степь, Северо-Чуйский хребет и ощущение огромного пространства.'},
- 'Кызыл-Чин / Марс':{text:'Цветные глинистые склоны — визуально самый необычный пейзаж путешествия. Это радиальный съезд от основной трассы.'},
- 'Кош-Агач':{text:'Дальняя точка нашего маршрута: высокогорная Чуйская степь и совсем другой, почти центральноазиатский масштаб.'},
- 'Водопад Ширлак':{text:'Короткая природная остановка, которую специально оставляем на обратную дорогу.'},
- 'Большой Ильгуменский порог':{text:'Мощная вода и скальные берега — сильная финальная природная точка перед возвращением к Семинскому перевалу.'}
-};
 function openDrawer(s){
- const info=destinationInfo[s.name];
- if(!info)return;
  document.getElementById('drawerDate').textContent=s.date;
  document.getElementById('drawerTitle').textContent=s.name;
- document.getElementById('drawerText').textContent=info.text;
- document.getElementById('destinationDrawer').classList.add('open');
+ document.getElementById('drawerDesc').textContent=s.desc;
+ const img=document.getElementById('drawerImg');
+ if(s.img){img.src=s.img;img.alt=s.name;img.style.display='block'}else{img.style.display='none'}
+ document.getElementById('drawerAction').innerHTML=s.url?`<a class="btn primary" href="${s.url}" target="_blank">Открыть / бронирование ↗</a>`:'';
+ document.getElementById('drawer').classList.add('open');
 }
-function closeDrawer(){document.getElementById('destinationDrawer').classList.remove('open')}
+document.querySelector('.drawer-close').addEventListener('click',()=>document.getElementById('drawer').classList.remove('open'));
 
+const bounds=[];
+stops.forEach(s=>{
+ L.marker([s.lat,s.lon],{icon:markerIcon(s)}).addTo(pointsLayer).on('click',()=>openDrawer(s));
+ L.marker([s.lat,s.lon],{interactive:false,icon:L.divIcon({className:'',html:`<div class="date-label">${s.date}</div>`,iconAnchor:[-7,18]})}).addTo(labelsLayer);
+ bounds.push([s.lat,s.lon]);
+});
+gas.forEach(g=>L.marker([g.lat,g.lon],{icon:L.divIcon({className:'gas-icon',html:'⛽',iconSize:[28,28],iconAnchor:[14,14]})}).bindPopup(`<b>${g.name}</b><br>${g.note}`).addTo(gasLayer));
+L.polyline(routePts,{color:'#a7664d',weight:4,opacity:.92,lineCap:'round',lineJoin:'round'}).addTo(routeLayer);
+L.polyline([[50.2427,87.9781],[50.065,88.330],[49.992,88.675],[50.2427,87.9781]],{color:'#c1ad8d',weight:2.5,dashArray:'5 8',opacity:.8}).addTo(routeLayer);
+map.fitBounds(bounds,{padding:[28,28]});
+
+const centers={'23.09':[51.829,85.767],'24.09':[50.95,85.9],'25.09':[50.44,86.8],'26.09':[50.30,87.63],'27.09 🎂':[50.245,87.93],'28.09':[50.03,88.43],'29.09':[50.45,86.95],'30.09':[50.85,86.0],'01.10':[51.966,85.833]};
 const timeline=document.getElementById('timeline');
 days.forEach(d=>{
- const el=document.createElement('article');el.className='day'+(d.bday?' bday':'');
- el.innerHTML=`<div class="date">${d.date}</div><h3>${d.title}</h3><p>${d.text}</p>${d.stay?`<div class="stay">Ночь: ${d.stay}</div>`:''}`;
- el.addEventListener('click',()=>{
-   const hit=stops.find(s=>s.date.includes(d.date.replace(' 🎂','').split('→')[0]) && (s.kind==='stay'||s.kind==='staybirthday'||s.kind==='birthday'||s.kind==='route'));
-   if(hit){map.flyTo([hit.lat,hit.lon],10,{duration:.7});document.getElementById('map').scrollIntoView({behavior:'smooth',block:'center'})}
- });
+ const el=document.createElement('article');el.className='day'+(d[0].includes('🎂')?' bday':'');
+ el.innerHTML=`<div class="date">${d[0]}</div><h3>${d[1]}</h3><p>${d[2]}</p>${d[3]?`<div class="stayline">night · ${d[3]}</div>`:''}`;
+ el.addEventListener('click',()=>{const c=centers[d[0]];if(c){map.flyTo(c,9,{duration:.6});document.getElementById('map').scrollIntoView({behavior:'smooth',block:'center'})}});
  timeline.appendChild(el);
 });
+
+function addCards(filter,targetId){
+ const target=document.getElementById(targetId);
+ stops.filter(filter).forEach((s,i)=>{
+  const el=document.createElement('article');el.className='card'+(i%3===1?' landscape':'');
+  el.innerHTML=`${s.img?`<img src="${s.img}" alt="${s.name}" loading="lazy">`:''}<div class="card-body"><div class="meta">${s.date}</div><h3>${s.name}</h3><p>${s.desc}</p>${s.url?`<a class="book" href="${s.url}" target="_blank">booking ↗</a>`:''}<div class="caption-line"><span>ALT / ROADBOOK</span><span>${s.kind.includes('stay')?'stay':'stop'}</span></div></div>`;
+  el.addEventListener('click',e=>{if(e.target.tagName!=='A')openDrawer(s)});
+  target.appendChild(el);
+ });
+}
+addCards(s=>s.kind.includes('stay'),'stayCards');
+addCards(s=>!s.kind.includes('stay'),'sightCards');
 </script>
-</body>
-</html>
+</body></html>
