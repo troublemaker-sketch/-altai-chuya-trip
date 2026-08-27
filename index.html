@@ -77,7 +77,7 @@ h1{font-size:clamp(68px,12vw,150px);line-height:.74;letter-spacing:-.055em;margi
 .drawer-close{position:absolute;right:10px;top:10px;width:34px;height:34px;border-radius:50%;border:1px solid #62685b;background:rgba(15,17,14,.85);color:#fff;font-size:18px;z-index:2}
 .pin-icon{width:30px!important;height:30px!important;border:2px solid #e8e1d4;border-radius:50%;box-shadow:0 3px 12px rgba(0,0,0,.3);display:flex;align-items:center;justify-content:center;font-size:12px;color:#fff}
 .gas-icon{background:#a68955;width:28px!important;height:28px!important;border-radius:50%;border:2px solid #e8e1d4;text-align:center;line-height:24px;font-size:12px}
-.date-label{background:rgba(16,18,15,.88);color:#ded7c9;border:1px solid #555b50;padding:3px 6px;font-size:9px;white-space:nowrap}
+.date-label{background:#f2eadc;color:#171914;border:1px solid rgba(23,25,20,.75);padding:4px 7px;font-size:10px;font-weight:600;line-height:1;white-space:nowrap;border-radius:2px;box-shadow:0 2px 7px rgba(0,0,0,.38);text-shadow:none}
 footer{border-top:1px solid var(--line);margin-top:80px;padding:22px 0;color:#8f9288;font-size:10px;line-height:1.6}
 @media(max-width:900px){.spread{grid-template-columns:1fr}.timeline{grid-template-columns:1fr 1fr}.side-copy h2{font-size:46px}}
 @media(max-width:620px){.magazine{padding-left:16px;padding-right:16px}.hero{min-height:82vh}.hero-main{padding-top:70px}.hero-bottom{display:block}.actions{margin-top:14px}#map{height:65vh;min-height:520px}.timeline{grid-template-columns:1fr}.section-head{grid-template-columns:1fr}.bday{min-height:520px;padding:24px}.masonry{columns:1}.image-break{height:60vh}}
@@ -158,6 +158,25 @@ body:before{background-position:center 20%}
  .card:nth-child(n){margin-top:0}
  .leaflet-control-layers-expanded{max-width:132px}
 }
+
+.date-label{position:relative;z-index:900!important}
+.leaflet-marker-pane .date-label{pointer-events:none}
+@media(max-width:620px){
+ .date-label{font-size:10px!important;padding:4px 6px!important;box-shadow:0 2px 8px rgba(0,0,0,.48)}
+}
+
+.hero-main h1,
+.hero-main h1 *,
+.hero-main h1::before,
+.hero-main h1::after{
+  text-decoration:none!important;
+  text-decoration-line:none!important;
+  border:0!important;
+  border-bottom:0!important;
+  background-image:none!important;
+  box-shadow:none!important;
+}
+.hero-main{border:0!important}
 </style>
 </head>
 <body>
@@ -269,7 +288,7 @@ function jumpToCard(s){
 const bounds=[];
 stops.forEach(s=>{
  L.marker([s.lat,s.lon],{icon:markerIcon(s)}).addTo(pointsLayer).on('click',()=>jumpToCard(s));
- L.marker([s.lat,s.lon],{interactive:false,icon:L.divIcon({className:'',html:`<div class="date-label">${s.date}</div>`,iconAnchor:[-7,18]})}).addTo(labelsLayer);
+ L.marker([s.lat,s.lon],{interactive:false,icon:L.divIcon({className:'',html:`<div class="date-label">${s.date}</div>`,iconAnchor:[-10,24]})}).addTo(labelsLayer);
  bounds.push([s.lat,s.lon]);
 });
 gas.forEach(g=>L.marker([g.lat,g.lon],{icon:L.divIcon({className:'gas-icon',html:'⛽',iconSize:[28,28],iconAnchor:[14,14]})}).bindPopup(`<b>${g.name}</b><br>${g.note}`).addTo(gasLayer));
